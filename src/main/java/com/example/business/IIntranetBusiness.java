@@ -17,21 +17,21 @@ public interface IIntranetBusiness {
 	// public News createNews(/* */);
 
 	// Reading
-	public Student getStudent(Long id_Student);
-	public Teacher getTeacher(Long id_Teacher);
-	public Administrator getAdmin(Long id_Admin);
-	public Course getCourse(Long id_Course);
-	public Section getSection(Long id_Section);
+	public Student getStudent(Long id_student);
+	public Teacher getTeacher(Long id_teacher);
+	public Administrator getAdmin(Long id_admin);
+	public Course getCourse(Long id_course);
+	public Section getSection(Long id_section);
 //	public Teacher getTeacher(Long id_Teacher);
 	
 	// modifying students inside sections
-	public void addStudentToSection(Long id_Student, Long id_Section);
-	public void removeStudentFromSection(Long id_Student, Long id_Section);
-	public void changeStudentFromSection(Long id_Student, Long id_lastSection, Long id_newSection);
+	public void addStudentToSection(Long id_student, Long id_section);
+	public void removeStudentFromSection(Long id_student, Long id_section);
+	public void changeStudentFromSection(Long id_student, Long id_lastSection, Long id_newSection);
 	
 	// modifying courses inside sections
-	public void addCourseToSection(Long id_Course, Long id_Section);
-	public void removeCourseFromSection(Long id_Course, Long id_Section);
+	public void addCourseToSection(Long id_course, Long id_section);
+	public void removeCourseFromSection(Long id_course, Long id_section);
 	
 	//public void changeTeacherOfCourse(Long id_newTeacher, Long id_Course);
 }

@@ -63,63 +63,61 @@ public class IntranetImplem implements IIntranetBusiness {
 	}
 
 	@Override
-	public Student getStudent(Long id_Student) {
-		Student student = studentRep.findOne(id_Student);
-		if (student == null) throw new RuntimeException("Student not found");
-		return student;
+	public Student getStudent(Long id_student) {
+		Student s = studentRep.find(id_student);
+		return s;
 	}
 
 	@Override
-	public Teacher getTeacher(Long id_Teacher) {
-		Teacher teacher = teacherRep.findOne(id_Teacher);
-		if (teacher == null) throw new RuntimeException("Teacher not found");
-		return teacher;
-	}
-
-	@Override
-	public Administrator getAdmin(Long id_Admin) {
+	public Teacher getTeacher(Long id_teacher) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Course getCourse(Long id_Course) {
+	public Administrator getAdmin(Long id_admin) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Section getSection(Long id_Section) {
+	public Course getCourse(Long id_course) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void addStudentToSection(Long id_Student, Long id_Section) {
-//		Student student = studentRep.findOne(id_Student);
-		
+	public Section getSection(Long id_section) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void removeStudentFromSection(Long id_Student, Long id_Section) {
+	public void addStudentToSection(Long id_student, Long id_section) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void changeStudentFromSection(Long id_Student, Long id_lastSection, Long id_newSection) {
+	public void removeStudentFromSection(Long id_student, Long id_section) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void addCourseToSection(Long id_Course, Long id_Section) {
+	public void changeStudentFromSection(Long id_student, Long id_lastSection, Long id_newSection) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removeCourseFromSection(Long id_Course, Long id_Section) {
+	public void addCourseToSection(Long id_course, Long id_section) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeCourseFromSection(Long id_course, Long id_section) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -12,7 +12,7 @@ public class Administrator implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue
-	private Long id_Administrator;
+	private Long id_administrator;
 	private String name;
 	private String email;
 	private String password;
@@ -30,8 +30,8 @@ public class Administrator implements Serializable {
 		this.password = password;
 	}
 	
-	public Long getId_Administrator() {
-		return id_Administrator;
+	public Long getId_administrator() {
+		return id_administrator;
 	}
 
 	public String getName() {

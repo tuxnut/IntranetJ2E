@@ -14,7 +14,7 @@ public class Section implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue
-	private Long id_Section;
+	private Long id_section;
 	private String name;
 	
 	@OneToMany(mappedBy="section")
@@ -32,8 +32,8 @@ public class Section implements Serializable {
 		this.name = name;
 	}
 
-	public Long getId_Section() {
-		return id_Section;
+	public Long getId_section() {
+		return id_section;
 	}
 
 	public String getName() {

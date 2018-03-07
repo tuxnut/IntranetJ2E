@@ -16,7 +16,7 @@ public class Teacher implements Serializable {
 	private String email;
 	private String password;
 	@Id @GeneratedValue
-	private Long id_Teacher;
+	private Long id_teacher;
 	@OneToMany(mappedBy="teacher")
 	private List<Course> l_courses;
 
@@ -33,8 +33,8 @@ public class Teacher implements Serializable {
 		this.password = password;
 	}
 	
-	public Long getId_Teacher() {
-		return id_Teacher;
+	public Long getId_teacher() {
+		return id_teacher;
 	}
 	
 	public List<Course> getL_courses() {

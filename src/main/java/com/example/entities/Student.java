@@ -14,7 +14,7 @@ public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id @GeneratedValue
-	private Long id_Student;
+	private Long id_student;
 	private String name;
 	private String email;
 	private String password;
@@ -35,8 +35,8 @@ public class Student implements Serializable {
 		this.password = password;
 	}
 
-	public Long getId_Student() {
-		return id_Student;
+	public Long getId_student() {
+		return id_student;
 	}
 
 	public String getName() {

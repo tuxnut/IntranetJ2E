@@ -14,7 +14,7 @@ public class Course implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue
-	private Long id_Course;
+	private Long id_course;
 	private String name;
 	
 	@ManyToOne
@@ -37,8 +37,8 @@ public class Course implements Serializable {
 		this.section = section;
 	}
 
-	public Long getId_Course() {
-		return id_Course;
+	public Long getId_course() {
+		return id_course;
 	}
 
 	public String getName() {
