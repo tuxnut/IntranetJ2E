@@ -1,6 +1,8 @@
 package com.example.web;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +26,7 @@ public class IntranetController {
 	}
 
 	@PostMapping(value = "/loginProcess")
-	public String loginProcess(HttpServletRequest request, Model model) {
+	public String loginProcess(HttpServletRequest request, HttpServletResponse response, Model model) {
 		
 		String result = iib.loginProcess(request);
 		
