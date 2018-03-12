@@ -1,5 +1,7 @@
 package com.example.business;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +50,7 @@ public class IntranetImplem implements IIntranetBusiness {
 	
 	@Override
 	public Map<String, String> addUser(HttpServletRequest request) {
-		Map<String, String> l_errors = new HashMap<String, String>();
+		Map<String, String> m_errors = new HashMap<String, String>();
 		
 		// Retrieve inputs from the form inscription
 		String r_lastname = request.getParameter("lastname");
@@ -60,13 +62,13 @@ public class IntranetImplem implements IIntranetBusiness {
 		String r_section = "";
 				
 		// validate email
-		if (!VALID_EMAIL_ADDRESS_REGEX.matcher(r_email).find()) l_errors.put("key_email", "wrong email pattern");
+		if (!VALID_EMAIL_ADDRESS_REGEX.matcher(r_email).find()) m_errors.put("key_email", "wrong email pattern");
 		
 		// validate password
-		if (!r_password.equals(r_password2)) l_errors.put("key_password", "wrong password");
+		if (!r_password.equals(r_password2)) m_errors.put("key_password", "wrong password");
 		
 		// create entity if no errors
-		if (l_errors.isEmpty()) {
+		if (m_errors.isEmpty()) {
 			if (r_type.equals("student")) {
 				r_section = request.getParameter("section");
 				createStudent(r_lastname, r_email, r_password, sectionRep.findByName(r_section));
@@ -77,7 +79,10 @@ public class IntranetImplem implements IIntranetBusiness {
 			}
 		}
 		
-		return l_errors;
+		System.out.println(m_errors.get("key_email"));
+		System.out.println(m_errors.get("key_password"));
+		
+		return m_errors;
 	}
 
 	@Override
@@ -227,7 +232,6 @@ public class IntranetImplem implements IIntranetBusiness {
 
 	@Override
 	public List<News> getAllNews(Date date) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

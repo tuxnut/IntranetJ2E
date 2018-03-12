@@ -1,5 +1,7 @@
 package com.example.web;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,15 +36,12 @@ public class IntranetController {
 			
 		if (result.equals("admin")) {
 			userType = result;
-			model.addAttribute("a_userType", userType);
 			return "redirect:/GestionNews";
 		} else if (result.equals("teacher")) {
 			userType = result;
-			model.addAttribute("a_userType", userType);
 			return "redirect:/GestionNotes";
 		} else if (result.equals("student")) {
 			userType = result;
-			model.addAttribute("a_userType", userType);
 			return "redirect:/MesNotes";
 		} else {
 			model.addAttribute("a_error", result);
@@ -89,9 +88,14 @@ public class IntranetController {
 	
 	@PostMapping(value = "/addUser")
 	public String addUser(HttpServletRequest request, Model model) {
+		Map<String, String> m_errors = iib.addUser(request);
 		
-		String result = iib.addUser(request);
-		
-		return "index";
+		if (!m_errors.isEmpty()) {
+			model.addAttribute("a_errors", m_errors);
+			return "forward:/GestionComptes";
+		} else {
+			model.addAttribute("a_success", "User created with success");
+			return "manageUsers";
+		}
 	}
 }

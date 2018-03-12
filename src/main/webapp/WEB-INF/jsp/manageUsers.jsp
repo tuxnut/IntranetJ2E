@@ -9,9 +9,9 @@
 <body>
 	<%@include  file="navBar.jsp" %>
 	<div class="main">
+		<h2>${a_success}</h2>
 		<form action="/addUser" method="post">
 			<div class="adduser_container">
-		    	<p>${a_error}</p>
 
 		    	<label for="lastname"><b>Nom</b></label>
 			    <input type="text" placeholder="Enter Lastname" name="lastname" required>
@@ -25,14 +25,14 @@
   				
   				<br>
 			
-				<label for="email"><b>Email</b></label>
-			    <input type="text" placeholder="Enter Email" name="email" required>
+				<label for="email"><b>Email</b></label> <p>${a_errors["key_email"]}</p>
+			    <input type="text" placeholder="Enter Email" name="email" required> 
 			    
-			    <label for="password"><b>Mot de passe</b></label>
+			    <label for="password"><b>Mot de passe</b></label> <p>${a_errors["key_password"]}</p>
 			    <input type="password" placeholder="Enter Password" name="password" required>
 			    
 			    <label for="password2"><b>Confirmation</b></label>
-			    <input type="password" placeholder="Enter Password" name="password2" required>
+			    <input type="password" placeholder="Enter Password" name="password2" required> 
 			    
 			    <label for="type"><b>Type</b></label>
 			    <select name="type">
