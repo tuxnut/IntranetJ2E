@@ -1,6 +1,7 @@
 package com.example.business;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ public interface IIntranetBusiness {
 	public String logoutProcess(HttpServletRequest request);
 	
 	// Creation
-	public String addUser(HttpServletRequest request);
+	public Map<String, String> addUser(HttpServletRequest request);
 	public Student createStudent(String name, String email, String password, Section section);
 	public Teacher createTeacher(String name, String email, String password);
 	public Administrator createAdministrator(String name, String email, String password);
@@ -33,7 +34,9 @@ public interface IIntranetBusiness {
 	public Administrator getAdmin(Long id_admin);
 	public Course getCourse(Long id_course);
 	public Section getSection(Long id_section);
+	public Section getSection(String name);
 	public News getNews(Long id_news);
+	public List<News> getAllNews(Date date);
 	
 	// modifying students inside sections
 	public void addStudentToSection(Student student, Section section);

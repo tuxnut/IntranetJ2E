@@ -2,7 +2,10 @@ package com.example.business;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,6 +31,8 @@ import com.example.entities.Teacher;
 @Transactional
 public class IntranetImplem implements IIntranetBusiness {
 	
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	
 	@Autowired
 	private StudentRepository studentRep;
 	@Autowired
@@ -42,10 +47,10 @@ public class IntranetImplem implements IIntranetBusiness {
 	private NewsRepository newsRep;
 	
 	@Override
-	public String addUser(HttpServletRequest request) {
+	public Map<String, String> addUser(HttpServletRequest request) {
 		Map<String, String> l_errors = new HashMap<String, String>();
 		
-		// Retrieve inputs from form
+		// Retrieve inputs from the form inscription
 		String r_lastname = request.getParameter("lastname");
 		String r_firstname = request.getParameter("firstname");
 		String r_email = request.getParameter("email");
@@ -53,11 +58,26 @@ public class IntranetImplem implements IIntranetBusiness {
 		String r_password2 = request.getParameter("password2");
 		String r_type = request.getParameter("type");
 		String r_section = "";
-		if (r_type.equals("student")) r_section = request.getParameter("section");
+				
+		// validate email
+		if (!VALID_EMAIL_ADDRESS_REGEX.matcher(r_email).find()) l_errors.put("key_email", "wrong email pattern");
 		
+		// validate password
+		if (!r_password.equals(r_password2)) l_errors.put("key_password", "wrong password");
 		
+		// create entity if no errors
+		if (l_errors.isEmpty()) {
+			if (r_type.equals("student")) {
+				r_section = request.getParameter("section");
+				createStudent(r_lastname, r_email, r_password, sectionRep.findByName(r_section));
+			} else if (r_type.equals("teacher")) {
+				createTeacher(r_lastname, r_email, r_password);
+			} else if (r_type.equals("admin")) {
+				createAdministrator(r_lastname, r_email, r_password);
+			}
+		}
 		
-		return "";
+		return l_errors;
 	}
 
 	@Override
@@ -134,6 +154,13 @@ public class IntranetImplem implements IIntranetBusiness {
 	}
 	
 	@Override
+	public Section getSection(String name) {
+		Section s = sectionRep.findByName(name);
+		if (s == null) throw new RuntimeException("Section not found");
+		return s;
+	}
+	
+	@Override
 	public News getNews(Long id_news) {
 		News n = newsRep.find(id_news);
 		if (n == null) throw new RuntimeException("News not found");
@@ -196,5 +223,11 @@ public class IntranetImplem implements IIntranetBusiness {
 	@Override
 	public String logoutProcess(HttpServletRequest request) {
 		return request.getParameter("answer");
+	}
+
+	@Override
+	public List<News> getAllNews(Date date) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

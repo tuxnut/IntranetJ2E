@@ -10,4 +10,8 @@ public interface SectionRepository extends JpaRepository<Section, Long> {
 	// Select one section by Id
 	@Query("SELECT s FROM Section s where s.id_section=:x")
 	Section find(@Param("x") Long id_section);
+	
+	// Select one section by name
+	@Query("SELECT s FROM Section s where s.name=:x")
+	Section findByName(@Param("x") String name);
 }
