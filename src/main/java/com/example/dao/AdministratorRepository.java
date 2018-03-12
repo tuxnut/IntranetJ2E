@@ -10,4 +10,8 @@ public interface AdministratorRepository extends JpaRepository<Administrator, Lo
 	// Select one admin by Id
 	@Query("SELECT a FROM Administrator a where a.id_administrator=:x")
 	Administrator find(@Param("x") Long id_administrator);
+	
+	// Select one admin by email
+	@Query("SELECT a FROM Administrator a where a.email=:x")
+	Administrator findByEmail(@Param("x") String email);
 }

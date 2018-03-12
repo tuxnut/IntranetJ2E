@@ -4,15 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Intranet</title>
+<title>Gestion des Notes</title>
 </head>
 <body>
 	<%@include  file="navBar.jsp" %>
-	
-	<div class="main">
-		<div class="presentation"></div>
-		<div class="news"></div>
-	</div>
-	
 </body>
 </html>

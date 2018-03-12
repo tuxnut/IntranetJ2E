@@ -24,10 +24,6 @@ public class IntranetApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Section sec = intranet.createSection("INGE");
-		Student student1 = intranet.createStudent("eleve", "eleve@intranet.fr", "azerty", sec);
-		Student student2 = intranet.getStudent(student1.getId_student());
-		
-		System.out.println(student2.getName());
+		intranet.createAdministrator("admin", "email@intranet.fr", "password");
 	}
 }
