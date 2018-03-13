@@ -1,5 +1,6 @@
 package com.example.web;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.business.IIntranetBusiness;
+import com.example.entities.News;
 import com.example.entities.Section;
 
 @Controller
@@ -38,6 +40,9 @@ public class IntranetController {
 		cookieType.setSecure(false);
 		response.addCookie(cookieType);
 		model.addAttribute("a_userType", userType);
+		List<News> l_news = iib.getAllNews();
+		model.addAttribute("a_news", l_news);
+		model.addAttribute("a_error", request.getParameter("a_error"));
 		return "index";
 	}
 
@@ -61,7 +66,7 @@ public class IntranetController {
 				return "redirect:/MesNotes";
 			}
 		}
-		model.addAttribute("a_erro", error);
+		model.addAttribute("a_error", error);
 		return "redirect:/Home";
 	}
 	
@@ -89,6 +94,8 @@ public class IntranetController {
 	@RequestMapping("/News")
 	public String news(HttpServletRequest request, Model model) {
 		model.addAttribute("a_userType", userType);
+		List<News> l_news = iib.getAllNews();
+		model.addAttribute("a_news", l_news);
 		return "news";
 	}
 	
@@ -98,17 +105,18 @@ public class IntranetController {
 		if (!userType.equals("admin"))
 			return "index";
 		
+		List<News> l_news = iib.getAllNews();
+		model.addAttribute("a_news", l_news);
 		return "manageNews";
 	}
 	
 	@RequestMapping("/GestionComptes")
-	public String manageUsers(HttpServletRequest request, Model model) {
-		List<Section> l_sections = iib.getAllSections();
-		
+	public String manageUsers(HttpServletRequest request, Model model) {		
 		model.addAttribute("a_userType", userType);
 		if (!userType.equals("admin"))
 			return "index";
 		
+		List<Section> l_sections = iib.getAllSections();
 		model.addAttribute("a_sections", l_sections);
 		return "manageUsers";
 	}
@@ -122,6 +130,7 @@ public class IntranetController {
 			return "forward:/GestionComptes";
 		} else {
 			model.addAttribute("a_success", "User created with success");
+			model.addAttribute("a_userType", userType);
 			return "manageUsers";
 		}
 	}

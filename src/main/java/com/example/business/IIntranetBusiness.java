@@ -39,7 +39,7 @@ public interface IIntranetBusiness {
 	public Section getSection(String name);
 	public List<Section> getAllSections();
 	public News getNews(Long id_news);
-	public List<News> getAllNews(Date date);
+	public List<News> getAllNews();
 	
 	// modifying students inside sections
 	public void addStudentToSection(Student student, Section section);

@@ -15,6 +15,7 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 	News find(@Param("x") Long id_news);
 	
 	// Select all news
-	@Query("Select n from News n where n.publicationDate<=:x")
+//	@Query("Select n from News n where n.publicationDate<=:x")
+	@Query("Select n from News n")
 	List<News> getAllNews(@Param("x") Date date);
 }

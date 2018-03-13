@@ -274,8 +274,10 @@ public class IntranetImplem implements IIntranetBusiness {
 	}
 
 	@Override
-	public List<News> getAllNews(Date date) {
-		return null;
+	public List<News> getAllNews() {
+		List<News> l_news = new ArrayList<>();
+		l_news = newsRep.getAllNews(new Date());
+		return l_news;
 	}
 
 	@Override

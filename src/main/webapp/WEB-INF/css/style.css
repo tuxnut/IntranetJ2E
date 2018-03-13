@@ -112,3 +112,20 @@ form {
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
 }
+
+/* News */
+.news h2 {
+	text-align: center;
+}
+
+.news p {
+	font-style: italic;
+}
+
+#quote {
+	text-align: right;
+}
+
+
+
+
