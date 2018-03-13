@@ -25,23 +25,17 @@ public class IntranetController {
 	
 	@RequestMapping(value = {"/Home", "/"})
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				System.out.println("COOKIE VALUE ==> " + cookie.getValue());
-				if (cookie.getName().equals("email")) { 
-					cookie.setValue(email);
-					response.addCookie(cookie);
-				}
-				else if (cookie.getName().equals("userType")) {
-					cookie.setValue(userType);
-					response.addCookie(cookie);
-				}
-			}
-		}
+		Cookie cookieMail = new Cookie("email", email);
+		cookieMail.setMaxAge(60 * 60 * 24);
+		cookieMail.setPath("/");
+		cookieMail.setSecure(false);
+		response.addCookie(cookieMail);
+		Cookie cookieType = new Cookie("userType", userType);
+		cookieType.setMaxAge(60 * 60 * 24);
+		cookieType.setPath("/");
+		cookieType.setSecure(false);
+		response.addCookie(cookieType);
 		model.addAttribute("a_userType", userType);
-		System.out.println("VALUE USER ==> " + userType);
-		System.out.println("VALUE MAIL ==> " + email);
 		return "index";
 	}
 

@@ -217,18 +217,21 @@ public class IntranetImplem implements IIntranetBusiness {
 		final String email_error = "Email not found";
 		final String pwd_error = "Wrong password";
 
+		
 		Cookie cookieMail = new Cookie("email", "");
 		cookieMail.setMaxAge(60 * 60 * 24);
 		cookieMail.setPath("/");
+		cookieMail.setSecure(false);
 		Cookie cookieType = new Cookie("userType", "");
 		cookieType.setMaxAge(60 * 60 * 24);
 		cookieType.setPath("/");
+		cookieType.setSecure(false);
 		switch (r_type) {
 		case "admin":
 			Administrator a = adminRep.findByEmail(r_email);
 			if (a != null) {
 				password = a.getPassword();
-	 			System.out.println("r_email ===> " + r_email);
+				System.out.println("r_email ===> " + r_email);
 				System.out.println("password ==> " + password);
 				if (password.equals(r_password)) {
 					cookieMail.setValue(r_email);
@@ -271,7 +274,6 @@ public class IntranetImplem implements IIntranetBusiness {
 		}
 		return Pair.of(email_error, r_type);
 	}
-
 
 	@Override
 	public List<News> getAllNews(Date date) {
