@@ -21,28 +21,43 @@ import com.example.entities.Section;
 
 @Controller
 public class IntranetController {
+	private final String admin = "admin";
+	private final String teacher = "teacher";
+	private final String student = "student";
+	
 	private String userType = "";
 	private String email = "";
+	
+	private String login_error = "";
 	
 	@Autowired 
 	private IIntranetBusiness iib;
 	
 	@RequestMapping(value = {"/Home", "/"})
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		// Set cookie for email
 		Cookie cookieMail = new Cookie("email", email);
 		cookieMail.setMaxAge(60 * 60 * 24);
 		cookieMail.setPath("/");
 		cookieMail.setSecure(false);
 		response.addCookie(cookieMail);
+		
+		// Set cookie for userType
 		Cookie cookieType = new Cookie("userType", userType);
 		cookieType.setMaxAge(60 * 60 * 24);
 		cookieType.setPath("/");
 		cookieType.setSecure(false);
 		response.addCookie(cookieType);
+		
+		// forward usertype for view (that display only a part of the navBar)
 		model.addAttribute("a_userType", userType);
+		
+		// forward list of news to the view
 		List<News> l_news = iib.getAllNews();
 		model.addAttribute("a_news", l_news);
-		model.addAttribute("a_error", request.getParameter("a_error"));
+
+		model.addAttribute("a_error", login_error);
 		return "index";
 	}
 
@@ -50,23 +65,22 @@ public class IntranetController {
 	public String loginProcess(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Pair<String, String> result = iib.loginProcess(request, response);
 		
-		String error = result.getFirst();
-		userType = result.getSecond();
+		login_error = result.getFirst();
 		
-		model.addAttribute("a_userType", userType);
-		if (error == "") {
+		if (login_error.equals("")) {
+			userType = result.getSecond();
+			model.addAttribute("a_userType", userType);
 			email = request.getParameter("email");
+			
 			switch(userType) {
-			case "admin":
-//				return "index";
+			case admin:
 				return "redirect:/GestionNews";
-			case "teacher":
+			case teacher:
 				return "redirect:/GestionNotes";
-			case "student":
+			case student:
 				return "redirect:/MesNotes";
 			}
 		}
-		model.addAttribute("a_error", error);
 		return "redirect:/Home";
 	}
 	
@@ -102,7 +116,7 @@ public class IntranetController {
 	@RequestMapping("/GestionNews")
 	public String manageNews(HttpServletRequest request, Model model) {
 		model.addAttribute("a_userType", userType);
-		if (!userType.equals("admin"))
+		if (!userType.equals(admin))
 			return "index";
 		
 		List<News> l_news = iib.getAllNews();
@@ -113,7 +127,7 @@ public class IntranetController {
 	@RequestMapping("/GestionComptes")
 	public String manageUsers(HttpServletRequest request, Model model) {		
 		model.addAttribute("a_userType", userType);
-		if (!userType.equals("admin"))
+		if (!userType.equals(admin))
 			return "index";
 		
 		List<Section> l_sections = iib.getAllSections();
