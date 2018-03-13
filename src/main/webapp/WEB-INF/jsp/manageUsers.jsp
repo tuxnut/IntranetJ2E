@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -24,11 +25,12 @@
   				<input type="radio" name="gender" value="female">Mme
   				
   				<br>
-			
-				<label for="email"><b>Email</b></label> <p>${a_errors["key_email"]}</p>
+				<p>${a_errors["key_email"]}</p>
+				<label for="email"><b>Email</b></label>
 			    <input type="text" placeholder="Enter Email" name="email" required> 
 			    
-			    <label for="password"><b>Mot de passe</b></label> <p>${a_errors["key_password"]}</p>
+			    <p>${a_errors["key_password"]}</p>
+			    <label for="password"><b>Mot de passe</b></label> 
 			    <input type="password" placeholder="Enter Password" name="password" required>
 			    
 			    <label for="password2"><b>Confirmation</b></label>
@@ -43,7 +45,10 @@
 			  	
 			  	<label for="section"><b>Classe (si elève)</b></label>
 			    <select name="section">
-				    <option value="section01">INGE</option>
+				    <c:forEach items="${a_sections}" var="curr_section">
+						<option value="${curr_section.name}">${curr_section.name}</option>
+					</c:forEach>
+<!-- 				    <option value="section01">INGE</option> -->
 			  	</select>
 			
 			    <button type="submit">Créer</button>

@@ -1,5 +1,6 @@
 package com.example.web;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.business.IIntranetBusiness;
+import com.example.entities.Section;
 
 @Controller
 public class IntranetController {
@@ -101,10 +103,13 @@ public class IntranetController {
 	
 	@RequestMapping("/GestionComptes")
 	public String manageUsers(HttpServletRequest request, Model model) {
+		List<Section> l_sections = iib.getAllSections();
+		
 		model.addAttribute("a_userType", userType);
 		if (!userType.equals("admin"))
 			return "index";
 		
+		model.addAttribute("a_sections", l_sections);
 		return "manageUsers";
 	}
 	

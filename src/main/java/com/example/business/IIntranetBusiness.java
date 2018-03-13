@@ -37,6 +37,7 @@ public interface IIntranetBusiness {
 	public Course getCourse(Long id_course);
 	public Section getSection(Long id_section);
 	public Section getSection(String name);
+	public List<Section> getAllSections();
 	public News getNews(Long id_news);
 	public List<News> getAllNews(Date date);
 	

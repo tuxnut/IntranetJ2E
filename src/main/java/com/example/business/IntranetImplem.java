@@ -1,6 +1,7 @@
 package com.example.business;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,7 +58,6 @@ public class IntranetImplem implements IIntranetBusiness {
 
 		// Retrieve inputs from the form inscription
 		String r_lastname = request.getParameter("lastname");
-		String r_firstname = request.getParameter("firstname");
 		String r_email = request.getParameter("email");
 		String r_password = request.getParameter("password");
 		String r_password2 = request.getParameter("password2");
@@ -83,10 +83,7 @@ public class IntranetImplem implements IIntranetBusiness {
 				createAdministrator(r_lastname, r_email, r_password);
 			}
 		}
-
-		System.out.println(m_errors.get("key_email"));
-		System.out.println(m_errors.get("key_password"));
-
+		
 		return m_errors;
 	}
 
@@ -278,5 +275,12 @@ public class IntranetImplem implements IIntranetBusiness {
 	@Override
 	public List<News> getAllNews(Date date) {
 		return null;
+	}
+
+	@Override
+	public List<Section> getAllSections() {
+		List<Section> l_sections = new ArrayList<>();
+		l_sections = sectionRep.getAllSections();
+		return l_sections;
 	}
 }

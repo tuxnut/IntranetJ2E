@@ -21,5 +21,8 @@ public class IntranetApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		intranet.createAdministrator("admin", "email@intranet.fr", "password");
+		intranet.createSection("INGE1");
+		intranet.createSection("INGE2");
+		intranet.createSection("INGE3");
 	}
 }
