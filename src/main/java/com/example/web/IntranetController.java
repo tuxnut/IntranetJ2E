@@ -2,10 +2,12 @@ package com.example.web;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,49 +18,75 @@ import com.example.business.IIntranetBusiness;
 @Controller
 public class IntranetController {
 	private String userType = "";
+	private String email = "";
 	
 	@Autowired 
 	private IIntranetBusiness iib;
 	
 	@RequestMapping(value = {"/Home", "/"})
-	public String index(HttpServletRequest request, Model model) {
-//		userType = (request.getAttribute("a_userType") != null) ? (String) request.getAttribute("a_userType") : "";
+	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				System.out.println("COOKIE VALUE ==> " + cookie.getValue());
+				if (cookie.getName().equals("email")) { 
+					cookie.setValue(email);
+					response.addCookie(cookie);
+				}
+				else if (cookie.getName().equals("userType")) {
+					cookie.setValue(userType);
+					response.addCookie(cookie);
+				}
+			}
+		}
 		model.addAttribute("a_userType", userType);
+		System.out.println("VALUE USER ==> " + userType);
+		System.out.println("VALUE MAIL ==> " + email);
 		return "index";
 	}
 
 	@PostMapping(value = "/loginProcess")
 	public String loginProcess(HttpServletRequest request, HttpServletResponse response, Model model) {
+		Pair<String, String> result = iib.loginProcess(request, response);
 		
-		String result = iib.loginProcess(request);
+		String error = result.getFirst();
+		userType = result.getSecond();
 		
-		// TODO : cookie
-			
-		if (result.equals("admin")) {
-			userType = result;
-			return "redirect:/GestionNews";
-		} else if (result.equals("teacher")) {
-			userType = result;
-			return "redirect:/GestionNotes";
-		} else if (result.equals("student")) {
-			userType = result;
-			return "redirect:/MesNotes";
-		} else {
-			model.addAttribute("a_error", result);
+		model.addAttribute("a_userType", userType);
+		if (error == "") {
+			email = request.getParameter("email");
+			switch(userType) {
+			case "admin":
+//				return "index";
+				return "redirect:/GestionNews";
+			case "teacher":
+				return "redirect:/GestionNotes";
+			case "student":
+				return "redirect:/MesNotes";
+			}
 		}
+		model.addAttribute("a_erro", error);
 		return "redirect:/Home";
 	}
 	
 	@PostMapping(value="/logoutProcess")
-	public String logoutProcess(HttpServletRequest request, Model model) {
-		String answer = iib.logoutProcess(request);
-		
-		if (answer.equals("yes")) {
-			// TODO : cookie
-			userType = "";
-			model.addAttribute("a_userType", userType);
+	public String logoutProcess(HttpServletRequest request, HttpServletResponse response, Model model) {
+	
+		if (request.getParameter("answer").equals("yes")) {
+			Cookie[] cookies = request.getCookies();
+			if (cookies == null) {
+				throw new RuntimeException("Cookies not found");
+			}
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("email") || cookie.getName().equals("userType")) {
+				cookie.setValue("");
+				response.addCookie(cookie);
+				userType = "";
+				email = "";
+				}
+			}
 		}
-		// TODO : Redirect to current page ?
+		model.addAttribute("a_userType", userType);
 		return "redirect:/Home";
 	}
 	

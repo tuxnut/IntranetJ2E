@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.data.util.Pair;
 
 import com.example.entities.Administrator;
 import com.example.entities.Course;
@@ -16,8 +19,7 @@ import com.example.entities.Teacher;
 
 public interface IIntranetBusiness {
 	// Login
-	public String loginProcess(HttpServletRequest request);
-	public String logoutProcess(HttpServletRequest request);
+	public Pair<String, String> loginProcess(HttpServletRequest request, HttpServletResponse response);
 	
 	// Creation
 	public Map<String, String> addUser(HttpServletRequest request);

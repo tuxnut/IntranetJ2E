@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
@@ -32,9 +34,10 @@ import com.example.entities.Teacher;
 @Service
 @Transactional
 public class IntranetImplem implements IIntranetBusiness {
-	
-	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-	
+
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+			Pattern.CASE_INSENSITIVE);
+
 	@Autowired
 	private StudentRepository studentRep;
 	@Autowired
@@ -47,11 +50,11 @@ public class IntranetImplem implements IIntranetBusiness {
 	private CourseRepository courseRep;
 	@Autowired
 	private NewsRepository newsRep;
-	
+
 	@Override
 	public Map<String, String> addUser(HttpServletRequest request) {
 		Map<String, String> m_errors = new HashMap<String, String>();
-		
+
 		// Retrieve inputs from the form inscription
 		String r_lastname = request.getParameter("lastname");
 		String r_firstname = request.getParameter("firstname");
@@ -60,13 +63,15 @@ public class IntranetImplem implements IIntranetBusiness {
 		String r_password2 = request.getParameter("password2");
 		String r_type = request.getParameter("type");
 		String r_section = "";
-				
+
 		// validate email
-		if (!VALID_EMAIL_ADDRESS_REGEX.matcher(r_email).find()) m_errors.put("key_email", "wrong email pattern");
-		
+		if (!VALID_EMAIL_ADDRESS_REGEX.matcher(r_email).find())
+			m_errors.put("key_email", "wrong email pattern");
+
 		// validate password
-		if (!r_password.equals(r_password2)) m_errors.put("key_password", "wrong password");
-		
+		if (!r_password.equals(r_password2))
+			m_errors.put("key_password", "wrong password");
+
 		// create entity if no errors
 		if (m_errors.isEmpty()) {
 			if (r_type.equals("student")) {
@@ -78,10 +83,10 @@ public class IntranetImplem implements IIntranetBusiness {
 				createAdministrator(r_lastname, r_email, r_password);
 			}
 		}
-		
+
 		System.out.println(m_errors.get("key_email"));
 		System.out.println(m_errors.get("key_password"));
-		
+
 		return m_errors;
 	}
 
@@ -116,7 +121,7 @@ public class IntranetImplem implements IIntranetBusiness {
 		Course course = courseRep.save(new Course(name, teacher, section));
 		return course;
 	}
-	
+
 	@Override
 	public News createNews(String title, String text, Date publicationDate) {
 		News news = newsRep.save(new News(title, text, publicationDate));
@@ -126,49 +131,56 @@ public class IntranetImplem implements IIntranetBusiness {
 	@Override
 	public Student getStudent(Long id_student) {
 		Student s = studentRep.find(id_student);
-		if (s == null) throw new RuntimeException("Student not found");
+		if (s == null)
+			throw new RuntimeException("Student not found");
 		return s;
 	}
 
 	@Override
 	public Teacher getTeacher(Long id_teacher) {
 		Teacher t = teacherRep.find(id_teacher);
-		if (t == null) throw new RuntimeException("Teacher not found");
+		if (t == null)
+			throw new RuntimeException("Teacher not found");
 		return t;
 	}
 
 	@Override
 	public Administrator getAdmin(Long id_admin) {
 		Administrator a = adminRep.find(id_admin);
-		if (a == null) throw new RuntimeException("Administrator not found");
+		if (a == null)
+			throw new RuntimeException("Administrator not found");
 		return a;
 	}
 
 	@Override
 	public Course getCourse(Long id_course) {
 		Course c = courseRep.find(id_course);
-		if (c == null) throw new RuntimeException("Course not found");
+		if (c == null)
+			throw new RuntimeException("Course not found");
 		return c;
 	}
 
 	@Override
 	public Section getSection(Long id_section) {
 		Section s = sectionRep.find(id_section);
-		if (s == null) throw new RuntimeException("Section not found");
+		if (s == null)
+			throw new RuntimeException("Section not found");
 		return s;
 	}
-	
+
 	@Override
 	public Section getSection(String name) {
 		Section s = sectionRep.findByName(name);
-		if (s == null) throw new RuntimeException("Section not found");
+		if (s == null)
+			throw new RuntimeException("Section not found");
 		return s;
 	}
-	
+
 	@Override
 	public News getNews(Long id_news) {
 		News n = newsRep.find(id_news);
-		if (n == null) throw new RuntimeException("News not found");
+		if (n == null)
+			throw new RuntimeException("News not found");
 		return n;
 	}
 
@@ -194,41 +206,72 @@ public class IntranetImplem implements IIntranetBusiness {
 	}
 
 	@Override
-	public String loginProcess(HttpServletRequest request) {		
+	public Pair<String, String> loginProcess(HttpServletRequest request, HttpServletResponse response) {
 		String password = "";
+
 		String r_email = request.getParameter("email");
 		String r_password = request.getParameter("password");
-		String error = "Wrong password";
-		
-		Teacher t;
-		Student s;
-		Administrator a;
-		
-		a = adminRep.findByEmail(r_email);
-		if (a != null) {
-			password = a.getPassword();
-			return (password.equals(r_password)) ? "admin" : error;
+		String r_type = request.getParameter("type");
+
+		final String no_error = "";
+		final String email_error = "Email not found";
+		final String pwd_error = "Wrong password";
+
+		Cookie cookieMail = new Cookie("email", "");
+		cookieMail.setMaxAge(60 * 60 * 24);
+		cookieMail.setPath("/");
+		Cookie cookieType = new Cookie("userType", "");
+		cookieType.setMaxAge(60 * 60 * 24);
+		cookieType.setPath("/");
+		switch (r_type) {
+		case "admin":
+			Administrator a = adminRep.findByEmail(r_email);
+			if (a != null) {
+				password = a.getPassword();
+	 			System.out.println("r_email ===> " + r_email);
+				System.out.println("password ==> " + password);
+				if (password.equals(r_password)) {
+					cookieMail.setValue(r_email);
+					response.addCookie(cookieMail);
+					cookieType.setValue(r_type);
+					response.addCookie(cookieType);
+					return Pair.of(no_error, r_type);
+				}
+				return Pair.of(pwd_error, r_type);
+			}
+			break;
+		case "teacher":
+			Teacher t = teacherRep.findByEmail(r_email);
+			if (t != null) {
+				password = t.getPassword();
+				if (password.equals(r_password)) {
+					cookieMail.setValue(r_email);
+					cookieType.setValue(r_type);
+					response.addCookie(cookieMail);
+					response.addCookie(cookieType);
+					return Pair.of(no_error, r_type);
+				}
+				return Pair.of(pwd_error, r_type);
+			}
+			break;
+		case "student":
+			Student s = studentRep.findByEmail(r_email);
+			if (s != null) {
+				password = s.getPassword();
+				if (password.equals(r_password)) {
+					cookieMail.setValue(r_email);
+					cookieType.setValue(r_type);
+					response.addCookie(cookieMail);
+					response.addCookie(cookieType);
+					return Pair.of(no_error, r_type);
+				}
+				return Pair.of(pwd_error, r_type);
+			}
+			break;
 		}
-		
-		t = teacherRep.findByEmail(r_email);
-		if (t != null) {
-			password = t.getPassword();
-			return (password.equals(r_password)) ? "teacher" : error;
-		}
-		
-		s = studentRep.findByEmail(r_email);
-		if (s != null) {
-			password = s.getPassword();
-			return (password.equals(r_password)) ? "student" : error;
-		}
-			
-		return "Email not found"; // User not registered
+		return Pair.of(email_error, r_type);
 	}
-	
-	@Override
-	public String logoutProcess(HttpServletRequest request) {
-		return request.getParameter("answer");
-	}
+
 
 	@Override
 	public List<News> getAllNews(Date date) {

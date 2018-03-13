@@ -6,10 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.business.IIntranetBusiness;
-import com.example.entities.Administrator;
-import com.example.entities.Section;
-import com.example.entities.Student;
-import com.example.entities.Teacher;
 
 
 @SpringBootApplication
