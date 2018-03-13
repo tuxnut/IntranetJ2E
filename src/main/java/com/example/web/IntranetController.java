@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.business.IIntranetBusiness;
+import com.example.entities.Course;
 import com.example.entities.News;
 import com.example.entities.Section;
+import com.example.entities.Student;
 
 @Controller
 public class IntranetController {
@@ -133,6 +135,32 @@ public class IntranetController {
 		List<Section> l_sections = iib.getAllSections();
 		model.addAttribute("a_sections", l_sections);
 		return "manageUsers";
+	}
+	
+	@RequestMapping("/GestionNotes")
+	public String manageNote(HttpServletRequest request, Model model) {
+		model.addAttribute("a_userType", userType);
+		if (!userType.equals(teacher))
+			return "index";
+		
+		List<Student> l_students = iib.getAllStudents();
+		model.addAttribute("a_students", l_students);
+		List<Course> l_courses = iib.getAllCourses();
+		model.addAttribute("a_courses", l_courses);
+		return "manageNotes";
+	}
+	
+	@PostMapping(value= "/addNote")
+	public String addNote(HttpServletRequest request, Model model) {
+		Map<String, String> m_errors = iib.addNote(request);
+		
+		if (!m_errors.isEmpty()) {
+			model.addAttribute("a_errors", m_errors);
+			return "forward:/GestionNotes";
+		}
+		model.addAttribute("a_success", "Note added with success");
+		model.addAttribute("a_userType", userType);
+		return "manageNotes";
 	}
 	
 	@PostMapping(value = "/addUser")

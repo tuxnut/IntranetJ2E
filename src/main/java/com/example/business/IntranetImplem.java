@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.dao.AdministratorRepository;
 import com.example.dao.CourseRepository;
 import com.example.dao.NewsRepository;
+import com.example.dao.NoteRepository;
 import com.example.dao.SectionRepository;
 import com.example.dao.StudentRepository;
 import com.example.dao.TeacherRepository;
@@ -31,6 +32,7 @@ import com.example.entities.News;
 import com.example.entities.Section;
 import com.example.entities.Student;
 import com.example.entities.Teacher;
+import com.example.entities.Note;
 
 @Service
 @Transactional
@@ -51,6 +53,8 @@ public class IntranetImplem implements IIntranetBusiness {
 	private CourseRepository courseRep;
 	@Autowired
 	private NewsRepository newsRep;
+	@Autowired
+	private NoteRepository noteRep;
 
 	@Override
 	public Map<String, String> addUser(HttpServletRequest request) {
@@ -86,7 +90,26 @@ public class IntranetImplem implements IIntranetBusiness {
 		
 		return m_errors;
 	}
-
+ 
+	@Override
+	public Map<String, String> addNote(HttpServletRequest request) {
+		Map<String, String> m_errors = new HashMap<String, String>();
+		
+		String r_studentID = request.getParameter("student");
+		String r_courseID = request.getParameter("course");
+		String r_value = request.getParameter("value");
+		
+		Student s = studentRep.find(Long.parseLong(r_studentID));
+		Course c = courseRep.find(Long.parseLong(r_courseID));
+		
+		if (s.getSection() != c.getSection()) {
+			m_errors.put("missmatch", "Student / Course missmatch");
+			return m_errors;
+		}
+		createNote(Integer.valueOf(r_value), c, s);
+		return m_errors;
+	}
+	
 	@Override
 	public Student createStudent(String name, String email, String password, Section section) {
 		Student student = new Student(name, email, password);
@@ -123,6 +146,12 @@ public class IntranetImplem implements IIntranetBusiness {
 	public News createNews(String title, String text, Date publicationDate) {
 		News news = newsRep.save(new News(title, text, publicationDate));
 		return news;
+	}
+	
+	@Override
+	public Note createNote(int value, Course course, Student student) {
+		Note note = noteRep.save(new Note(value, course, student));
+		return note;
 	}
 
 	@Override
@@ -285,5 +314,18 @@ public class IntranetImplem implements IIntranetBusiness {
 		List<Section> l_sections = new ArrayList<>();
 		l_sections = sectionRep.getAllSections();
 		return l_sections;
+	}
+	
+	@Override
+	public List<Student> getAllStudents() {	
+		List<Student> l_notes = new ArrayList<>();
+		l_notes = studentRep.getAllStudents();
+		return l_notes;
+	}
+	
+	public List<Course> getAllCourses() {
+		List<Course> l_courses = new ArrayList<>();
+		l_courses = courseRep.getAllCourses();
+		return l_courses;
 	}
 }

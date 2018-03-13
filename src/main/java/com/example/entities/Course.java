@@ -1,12 +1,14 @@
 package com.example.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Course implements Serializable {
@@ -24,6 +26,21 @@ public class Course implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_section_course")
 	private Section section;
+	
+	public List<Note> getL_notes() {
+		return l_notes;
+	}
+
+	public void setL_notes(List<Note> l_notes) {
+		this.l_notes = l_notes;
+	}
+
+	public void setId_course(Long id_course) {
+		this.id_course = id_course;
+	}
+
+	@OneToMany(mappedBy="course")
+	private List<Note> l_notes;
 
 	public Course() {
 		// TODO Auto-generated constructor stub

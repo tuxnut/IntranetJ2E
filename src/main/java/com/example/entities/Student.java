@@ -1,12 +1,14 @@
 package com.example.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Student implements Serializable {
@@ -21,6 +23,16 @@ public class Student implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="fk_section_student")
 	private Section section;
+	@OneToMany(mappedBy="student")
+	private List<Note> l_notes;
+
+	public List<Note> getL_notes() {
+		return l_notes;
+	}
+
+	public void setL_notes(List<Note> l_notes) {
+		this.l_notes = l_notes;
+	}
 
 	public Student() {
 		super();

@@ -15,7 +15,7 @@ import com.example.entities.News;
 import com.example.entities.Section;
 import com.example.entities.Student;
 import com.example.entities.Teacher;
-
+import com.example.entities.Note;
 
 public interface IIntranetBusiness {
 	// Login
@@ -23,12 +23,14 @@ public interface IIntranetBusiness {
 	
 	// Creation
 	public Map<String, String> addUser(HttpServletRequest request);
+	public Map<String, String> addNote(HttpServletRequest request);
 	public Student createStudent(String name, String email, String password, Section section);
 	public Teacher createTeacher(String name, String email, String password);
 	public Administrator createAdministrator(String name, String email, String password);
 	public Section createSection(String name);
 	public Course createCourse(String name, Teacher teacher, Section section);
 	public News createNews(String title, String text, Date publicationDate);
+	public Note createNote(int value, Course course, Student student);
 
 	// Reading
 	public Student getStudent(Long id_student);
@@ -40,6 +42,8 @@ public interface IIntranetBusiness {
 	public List<Section> getAllSections();
 	public News getNews(Long id_news);
 	public List<News> getAllNews();
+	public List<Student> getAllStudents();
+	public List<Course> getAllCourses();
 	
 	// modifying students inside sections
 	public void addStudentToSection(Student student, Section section);
