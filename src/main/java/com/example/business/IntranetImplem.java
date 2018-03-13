@@ -215,26 +215,27 @@ public class IntranetImplem implements IIntranetBusiness {
 		final String pwd_error = "Wrong password";
 
 		
-		Cookie cookieMail = new Cookie("email", "");
-		cookieMail.setMaxAge(60 * 60 * 24);
-		cookieMail.setPath("/");
-		cookieMail.setSecure(false);
-		Cookie cookieType = new Cookie("userType", "");
-		cookieType.setMaxAge(60 * 60 * 24);
-		cookieType.setPath("/");
-		cookieType.setSecure(false);
+		Cookie c_Mail = null;
+		Cookie c_Type = null;
+		
+		Cookie[] cookies = request.getCookies();
+		if (cookies == null) {
+			throw new RuntimeException("Cookies not found");
+		}
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().equals("email")) { c_Mail = cookie; }
+			else if (cookie.getName().equals("userType")) { c_Type = cookie; };
+		}
 		switch (r_type) {
 		case "admin":
 			Administrator a = adminRep.findByEmail(r_email);
 			if (a != null) {
 				password = a.getPassword();
-				System.out.println("r_email ===> " + r_email);
-				System.out.println("password ==> " + password);
 				if (password.equals(r_password)) {
-					cookieMail.setValue(r_email);
-					response.addCookie(cookieMail);
-					cookieType.setValue(r_type);
-					response.addCookie(cookieType);
+					c_Mail.setValue(r_email);
+					response.addCookie(c_Mail);
+					c_Type.setValue(r_type);
+					response.addCookie(c_Type);
 					return Pair.of(no_error, r_type);
 				}
 				return Pair.of(pwd_error, r_type);
@@ -245,10 +246,10 @@ public class IntranetImplem implements IIntranetBusiness {
 			if (t != null) {
 				password = t.getPassword();
 				if (password.equals(r_password)) {
-					cookieMail.setValue(r_email);
-					cookieType.setValue(r_type);
-					response.addCookie(cookieMail);
-					response.addCookie(cookieType);
+					c_Mail.setValue(r_email);
+					response.addCookie(c_Mail);
+					c_Type.setValue(r_type);
+					response.addCookie(c_Type);
 					return Pair.of(no_error, r_type);
 				}
 				return Pair.of(pwd_error, r_type);
@@ -259,10 +260,10 @@ public class IntranetImplem implements IIntranetBusiness {
 			if (s != null) {
 				password = s.getPassword();
 				if (password.equals(r_password)) {
-					cookieMail.setValue(r_email);
-					cookieType.setValue(r_type);
-					response.addCookie(cookieMail);
-					response.addCookie(cookieType);
+					c_Mail.setValue(r_email);
+					response.addCookie(c_Mail);
+					c_Type.setValue(r_type);
+					response.addCookie(c_Type);
 					return Pair.of(no_error, r_type);
 				}
 				return Pair.of(pwd_error, r_type);
