@@ -11,9 +11,17 @@
 	<%@include  file="navBar.jsp" %>
 	
 	<div class="main">
-		<div class="news">
-			<%@include  file="displayNews.jsp" %>
-		</div>
+		<h2>${a_success}</h2>
+		<form action="/addNews" method="post">
+			<div class="adduser_container">
+				<label for="title"><b>Title</b></label>
+			    <input type="text" placeholder="My title" name="title" required maxlength="255">
+			  	
+			  	<label for="content"><b>Contents</b></label>
+			    <input type="text" placeholder="Content ..." name="content" required maxlength="255">
+			  	<button type="submit">Add</button>
+			</div>
+		</form>
 	</div>
 </body>
 </html>

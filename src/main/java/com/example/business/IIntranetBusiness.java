@@ -24,6 +24,7 @@ public interface IIntranetBusiness {
 	// Creation
 	public Map<String, String> addUser(HttpServletRequest request);
 	public Map<String, String> addNote(HttpServletRequest request);
+	public Map<String, String> addNews(HttpServletRequest request);
 	public Student createStudent(String name, String email, String password, Section section);
 	public Teacher createTeacher(String name, String email, String password);
 	public Administrator createAdministrator(String name, String email, String password);
@@ -34,11 +35,13 @@ public interface IIntranetBusiness {
 
 	// Reading
 	public Student getStudent(Long id_student);
+	public Student getStudentByMail(String mail);
 	public Teacher getTeacher(Long id_teacher);
 	public Administrator getAdmin(Long id_admin);
 	public Course getCourse(Long id_course);
 	public Section getSection(Long id_section);
 	public Section getSection(String name);
+	public List<Note> getNoteOfStudent(Long id_student);
 	public List<Section> getAllSections();
 	public News getNews(Long id_news);
 	public List<News> getAllNews();

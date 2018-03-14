@@ -1,4 +1,3 @@
-
 <c:forEach items="${a_news}" var="curr_news">
 	<h2>${curr_news.title}</h2>
 	<br>

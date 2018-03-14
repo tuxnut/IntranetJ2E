@@ -1,5 +1,6 @@
 package com.example.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.business.IIntranetBusiness;
 import com.example.entities.Course;
 import com.example.entities.News;
+import com.example.entities.Note;
 import com.example.entities.Section;
 import com.example.entities.Student;
 
@@ -121,8 +123,6 @@ public class IntranetController {
 		if (!userType.equals(admin))
 			return "index";
 		
-		List<News> l_news = iib.getAllNews();
-		model.addAttribute("a_news", l_news);
 		return "manageNews";
 	}
 	
@@ -148,6 +148,25 @@ public class IntranetController {
 		List<Course> l_courses = iib.getAllCourses();
 		model.addAttribute("a_courses", l_courses);
 		return "manageNotes";
+	}
+	
+	@RequestMapping("/MesNotes")
+	public String displayNote(HttpServletRequest request, Model model) {
+		model.addAttribute("a_userType",  userType);
+		if (!userType.equals("student")) {
+			return "index";
+		}
+		Student s = iib.getStudentByMail(email);
+		List<Note> l_notes = iib.getNoteOfStudent(s.getId_student());
+		List<String> l_courses_name = new ArrayList<String>();
+		for (Note note : l_notes) {
+			l_courses_name.add(note.getCourse().getName());
+			System.out.println(note.getCourse().getName() + " --> " + note.getValue());
+		}
+		
+		model.addAttribute("a_notes", l_notes);
+		model.addAttribute("a_courses_name", l_courses_name);
+		return "myNotes";
 	}
 	
 	@PostMapping(value= "/addNote")
@@ -181,5 +200,18 @@ public class IntranetController {
 			model.addAttribute("a_sections", l_sections);
 			return "manageUsers";
 		}
+	}
+	
+	@PostMapping(value = "/addNews")
+	public String addNews(HttpServletRequest request, Model model) {
+		Map<String, String> m_errors = iib.addNews(request);
+		
+		if (!m_errors.isEmpty()) {
+			model.addAttribute("a_errors",  m_errors);
+			return "forward:/GestionNews";
+		}
+		model.addAttribute("a_success", "News created with success");
+		model.addAttribute("a_userType",  userType);	
+		return "manageNews";
 	}
 }

@@ -116,6 +116,17 @@ public class IntranetImplem implements IIntranetBusiness {
 	}
 	
 	@Override
+	public Map<String, String> addNews(HttpServletRequest request) {
+		Map<String, String> m_errors = new HashMap<String, String>();
+		
+		String r_title = request.getParameter("title");
+		String r_content = request.getParameter("content");
+		
+		createNews(r_title, r_content, new Date());
+		return m_errors;
+	}
+	
+	@Override
 	public Student createStudent(String name, String email, String password, Section section) {
 		Student student = new Student(name, email, password);
 		student.setSection(section);
@@ -162,6 +173,21 @@ public class IntranetImplem implements IIntranetBusiness {
 	@Override
 	public Student getStudent(Long id_student) {
 		Student s = studentRep.find(id_student);
+		if (s == null)
+			throw new RuntimeException("Student not found");
+		return s;
+	}
+	@Override
+	public List<Note> getNoteOfStudent(Long id_student) {
+		List<Note> l_note = noteRep.getNoteOfStudent(id_student);
+		if (l_note == null)
+			return new ArrayList<Note>();
+		return l_note;
+	}
+	
+	@Override
+	public Student getStudentByMail(String mail) {
+		Student s = studentRep.findByEmail(mail);
 		if (s == null)
 			throw new RuntimeException("Student not found");
 		return s;
