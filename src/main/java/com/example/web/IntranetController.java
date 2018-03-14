@@ -160,6 +160,10 @@ public class IntranetController {
 		}
 		model.addAttribute("a_success", "Note added with success");
 		model.addAttribute("a_userType", userType);
+		List<Student> l_students = iib.getAllStudents();
+		model.addAttribute("a_students", l_students);
+		List<Course> l_courses = iib.getAllCourses();
+		model.addAttribute("a_courses", l_courses);
 		return "manageNotes";
 	}
 	
@@ -173,6 +177,8 @@ public class IntranetController {
 		} else {
 			model.addAttribute("a_success", "User created with success");
 			model.addAttribute("a_userType", userType);
+			List<Section> l_sections = iib.getAllSections();
+			model.addAttribute("a_sections", l_sections);
 			return "manageUsers";
 		}
 	}

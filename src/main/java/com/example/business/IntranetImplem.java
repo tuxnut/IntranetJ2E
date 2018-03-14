@@ -106,6 +106,11 @@ public class IntranetImplem implements IIntranetBusiness {
 			m_errors.put("missmatch", "Student / Course missmatch");
 			return m_errors;
 		}
+		
+		if (Integer.valueOf(r_value)< 0) {
+			m_errors.put("Error", "Negative value");
+			return m_errors;
+		}
 		createNote(Integer.valueOf(r_value), c, s);
 		return m_errors;
 	}

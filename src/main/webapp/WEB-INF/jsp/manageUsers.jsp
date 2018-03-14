@@ -49,7 +49,6 @@
 				    <c:forEach items="${a_sections}" var="curr_section">
 						<option value="${curr_section.name}">${curr_section.name}</option>
 					</c:forEach>
-<!-- 				    <option value="section01">INGE</option> -->
 			  	</select>
 			
 			    <button type="submit">Créer</button>

@@ -35,10 +35,10 @@ public class IntranetApplication implements CommandLineRunner {
 		Teacher t = intranet.createTeacher("MAIDI", "maidi@intranet.fr", "password");
 		Course c = intranet.createCourse("Vision", t, s);
 		Note n = intranet.createNote(0, c, su);
-//		intranet.createNews("News 0", 0 + texte, new Date());
-//		intranet.createNews("News 1", 1 + texte, new Date());
-//		intranet.createNews("News 2", 2 + texte, new Date());
-//		intranet.createNews("News 3", 3 + texte, new Date());
-//		intranet.createNews("News 4", 4 + texte, new Date());
+		intranet.createNews("News 0", 0 + texte, new Date());
+		intranet.createNews("News 1", 1 + texte, new Date());
+		intranet.createNews("News 2", 2 + texte, new Date());
+		intranet.createNews("News 3", 3 + texte, new Date());
+		intranet.createNews("News 4", 4 + texte, new Date());
 	}
 }
