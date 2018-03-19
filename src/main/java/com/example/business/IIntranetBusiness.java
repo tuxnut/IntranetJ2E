@@ -37,6 +37,7 @@ public interface IIntranetBusiness {
 	public Student getStudent(Long id_student);
 	public Student getStudentByMail(String mail);
 	public Teacher getTeacher(Long id_teacher);
+	public Teacher getTeacherByMail(String mail);
 	public Administrator getAdmin(Long id_admin);
 	public Course getCourse(Long id_course);
 	public Section getSection(Long id_section);
@@ -46,7 +47,6 @@ public interface IIntranetBusiness {
 	public News getNews(Long id_news);
 	public List<News> getAllNews();
 	public List<Student> getAllStudents();
-	public List<Course> getAllCourses();
 	
 	// modifying students inside sections
 	public void addStudentToSection(Student student, Section section);

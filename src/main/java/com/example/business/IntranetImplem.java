@@ -200,6 +200,14 @@ public class IntranetImplem implements IIntranetBusiness {
 			throw new RuntimeException("Teacher not found");
 		return t;
 	}
+	
+	@Override
+	public Teacher getTeacherByMail(String mail) {
+		Teacher t = teacherRep.findByEmail(mail);
+		if (t == null)
+			throw new RuntimeException("Teacher not found");
+		return t;
+	}
 
 	@Override
 	public Administrator getAdmin(Long id_admin) {
@@ -352,11 +360,5 @@ public class IntranetImplem implements IIntranetBusiness {
 		List<Student> l_notes = new ArrayList<>();
 		l_notes = studentRep.getAllStudents();
 		return l_notes;
-	}
-	
-	public List<Course> getAllCourses() {
-		List<Course> l_courses = new ArrayList<>();
-		l_courses = courseRep.getAllCourses();
-		return l_courses;
 	}
 }

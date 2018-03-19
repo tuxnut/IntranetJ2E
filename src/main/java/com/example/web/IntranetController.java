@@ -22,6 +22,7 @@ import com.example.entities.News;
 import com.example.entities.Note;
 import com.example.entities.Section;
 import com.example.entities.Student;
+import com.example.entities.Teacher;
 
 @Controller
 public class IntranetController {
@@ -145,7 +146,8 @@ public class IntranetController {
 		
 		List<Student> l_students = iib.getAllStudents();
 		model.addAttribute("a_students", l_students);
-		List<Course> l_courses = iib.getAllCourses();
+		Teacher t = iib.getTeacherByMail(email);
+		List<Course> l_courses = t.getL_courses();
 		model.addAttribute("a_courses", l_courses);
 		return "manageNotes";
 	}
@@ -181,7 +183,8 @@ public class IntranetController {
 		model.addAttribute("a_userType", userType);
 		List<Student> l_students = iib.getAllStudents();
 		model.addAttribute("a_students", l_students);
-		List<Course> l_courses = iib.getAllCourses();
+		Teacher t = iib.getTeacherByMail(email);
+		List<Course> l_courses = t.getL_courses();
 		model.addAttribute("a_courses", l_courses);
 		return "manageNotes";
 	}

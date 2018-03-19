@@ -27,9 +27,6 @@
 	    <li>
 	        <a href="${pageContext.request.contextPath}/MesNotes">Mes Notes</a>
 	    </li>
-	    <li>
-	        <a href="${pageContext.request.contextPath}/EmploiDuTemps">Emploi du Temps</a>
-	    </li>
 	    <% } %>
 	    <% if (request.getAttribute("a_userType").equals("")) { %>
 	    <li style="float:right">
