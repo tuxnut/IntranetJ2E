@@ -122,7 +122,7 @@ public class IntranetController {
 	public String manageNews(HttpServletRequest request, Model model) {
 		model.addAttribute("a_userType", userType);
 		if (!userType.equals(admin))
-			return "index";
+			return "redirect:/Home";
 		
 		return "manageNews";
 	}
@@ -131,7 +131,7 @@ public class IntranetController {
 	public String manageUsers(HttpServletRequest request, Model model) {		
 		model.addAttribute("a_userType", userType);
 		if (!userType.equals(admin))
-			return "index";
+			return "redirect:/Home";
 		
 		List<Section> l_sections = iib.getAllSections();
 		model.addAttribute("a_sections", l_sections);
@@ -142,7 +142,7 @@ public class IntranetController {
 	public String manageNote(HttpServletRequest request, Model model) {
 		model.addAttribute("a_userType", userType);
 		if (!userType.equals(teacher))
-			return "index";
+			return "redirect:/Home";
 		
 		List<Student> l_students = iib.getAllStudents();
 		model.addAttribute("a_students", l_students);
@@ -156,7 +156,7 @@ public class IntranetController {
 	public String displayNote(HttpServletRequest request, Model model) {
 		model.addAttribute("a_userType",  userType);
 		if (!userType.equals("student")) {
-			return "index";
+			return "redirect:/Home";
 		}
 		Student s = iib.getStudentByMail(email);
 		List<Note> l_notes = iib.getNoteOfStudent(s.getId_student());
