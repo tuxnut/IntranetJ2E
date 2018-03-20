@@ -46,6 +46,7 @@ public interface IIntranetBusiness {
 	public List<Section> getAllSections();
 	public News getNews(Long id_news);
 	public List<News> getAllNews();
+	public List<News> getAllNews2();
 	public List<Student> getAllStudents();
 	
 	// modifying students inside sections

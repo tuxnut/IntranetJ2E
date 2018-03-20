@@ -344,7 +344,26 @@ public class IntranetImplem implements IIntranetBusiness {
 	@Override
 	public List<News> getAllNews() {
 		List<News> l_news = new ArrayList<>();
-		l_news = newsRep.getAllNews(new Date());
+		
+		Date referenceDate = new Date();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(referenceDate); 
+		c.add(Calendar.MONTH, -1);
+		
+		l_news = newsRep.getAllNews(c.getTime());
+		return l_news;
+	}
+	
+	@Override
+	public List<News> getAllNews2() {
+		List<News> l_news = new ArrayList<>();
+		
+		Date referenceDate = new Date();
+		Calendar c = Calendar.getInstance(); 
+		c.setTime(referenceDate); 
+		c.add(Calendar.YEAR, -10);
+		
+		l_news = newsRep.getAllNews(c.getTime());
 		return l_news;
 	}
 

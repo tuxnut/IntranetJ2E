@@ -113,7 +113,7 @@ public class IntranetController {
 	@RequestMapping("/News")
 	public String news(HttpServletRequest request, Model model) {
 		model.addAttribute("a_userType", userType);
-		List<News> l_news = iib.getAllNews();
+		List<News> l_news = iib.getAllNews2();
 		model.addAttribute("a_news", l_news);
 		return "news";
 	}
